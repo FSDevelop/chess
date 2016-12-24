@@ -15,5 +15,5 @@ socket.on('connection', function(client) {
 });
 
 server.listen(8080, function() {
-	console.log('Waiting for players...');
+	console.log('Running on port 8080...');
 });
