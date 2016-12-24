@@ -138,13 +138,14 @@ function placePiece(x, y) {
             }
         }
         
+        pieces[movedPiece.index].selected = false;
+        
         var data = {
             piece: pieces[movedPiece.index], 
             index: movedPiece.index
         };
         
         socket.emit('placePiece', data);
-        pieces[movedPiece.index].selected = false;
     }
 }
 
