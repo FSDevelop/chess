@@ -9,8 +9,8 @@ var server = http.createServer(app);
 var socket = require('socket.io')(server);
 
 socket.on('connection', function(client) {
-    client.on('move', function(movement) {
-        console.log(movement);
+    fs.readFile('default.json', 'utf8', function (err, data) {
+        client.emit('init', data);
     });
 });
 
