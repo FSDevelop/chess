@@ -1,0 +1,10 @@
+{
+    "pawn": {
+        "movement": "1-up",
+        "exception": "1-front-diagonal"
+    },
+    "rook": {
+        "steps": 8,
+        ""
+    }
+}
