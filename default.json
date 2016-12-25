@@ -1,34 +1,226 @@
 [
-    { "x": 0, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 1, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 2, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 3, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 4, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 5, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 6, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 7, "y": 6, "type": "pawn", "player": "white", "movements": 0 },
-    { "x": 0, "y": 7, "type": "rook", "player": "white", "movements": 0 },
-    { "x": 1, "y": 7, "type": "knight", "player": "white", "movements": 0 },
-    { "x": 2, "y": 7, "type": "bishop", "player": "white", "movements": 0 },
-    { "x": 3, "y": 7, "type": "queen", "player": "white", "movements": 0 },
-    { "x": 4, "y": 7, "type": "king", "player": "white", "movements": 0 },
-    { "x": 5, "y": 7, "type": "bishop", "player": "white", "movements": 0 },
-    { "x": 6, "y": 7, "type": "knight", "player": "white", "movements": 0 },
-    { "x": 7, "y": 7, "type": "rook", "player": "white", "movements": 0 },
-    { "x": 0, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 1, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 2, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 3, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 4, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 5, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 6, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 7, "y": 1, "type": "pawn", "player": "black", "movements": 0 },
-    { "x": 0, "y": 0, "type": "rook", "player": "black", "movements": 0 },
-    { "x": 1, "y": 0, "type": "knight", "player": "black", "movements": 0 },
-    { "x": 2, "y": 0, "type": "bishop", "player": "black", "movements": 0 },
-    { "x": 3, "y": 0, "type": "queen", "player": "black", "movements": 0 },
-    { "x": 4, "y": 0, "type": "king", "player": "black", "movements": 0 },
-    { "x": 5, "y": 0, "type": "bishop", "player": "black", "movements": 0 },
-    { "x": 6, "y": 0, "type": "knight", "player": "black", "movements": 0 },
-    { "x": 7, "y": 0, "type": "rook", "player": "black", "movements": 0 }
+    { 
+        "x": 0, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 1, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 2, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 3, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 4, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 5, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 6, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 7, "y": 6, 
+        "type": "pawn", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 0, "y": 7, 
+        "type": "rook", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 1, "y": 7, 
+        "type": "knight", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 2, "y": 7, 
+        "type": "bishop", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 3, "y": 7, 
+        "type": "queen", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 4, "y": 7, 
+        "type": "king", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 5, "y": 7, 
+        "type": "bishop", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 6, "y": 7, 
+        "type": "knight", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 7, "y": 7, 
+        "type": "rook", 
+        "player": "white", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 0, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 1, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 2, "y": 1, 
+        "type": "pawn",
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 3, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 4, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 5, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 6, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 7, "y": 1, 
+        "type": "pawn", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 0, "y": 0, 
+        "type": "rook", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 1, "y": 0, 
+        "type": "knight", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 2, "y": 0, 
+        "type": "bishop", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 3, "y": 0, 
+        "type": "queen", 
+        "player": "black",
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 4, "y": 0, 
+        "type": "king", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 5, "y": 0, 
+        "type": "bishop", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 6, "y": 0, 
+        "type": "knight", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    },
+    { 
+        "x": 7, "y": 0, 
+        "type": "rook", 
+        "player": "black", 
+        "movements": 0,
+        "eaten": false
+    }
 ]

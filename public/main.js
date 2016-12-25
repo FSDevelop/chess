@@ -233,8 +233,9 @@ var isValidPosition = function() {
     
     // Verify new position isn't occuped by an ally
     for (var i = 0; i < 32; i++) {
-        // It means it's occuped
-        if (pieces[i].x == newPosition.x && pieces[i].y == newPosition.y && i != movedPiece.index) {
+        // It means it's occuped by an ally
+        if (pieces[i].x == newPosition.x && pieces[i].y == newPosition.y && 
+            i != movedPiece.index && movedPiece.player == pieces[i].player) {
             isValid = false;
         }
     }
