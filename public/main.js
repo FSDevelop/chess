@@ -157,7 +157,7 @@ function placePiece(x, y) {
     }
 }
 
-function isValidPosition() {
+var isValidPosition = function() {
     var isValid = false;
     
     var lastPosition = {
@@ -181,16 +181,20 @@ function isValidPosition() {
         }
     }
     
-    var frontSense = (movedPiece.player == "white") ? "up" : "down";
-    
+    // Basic movements restrictions
     switch (movedPiece.type) {
         case "pawn":
-            if (((((movedPiece.player == "white" && newPosition.y == lastPosition.y - 1) || 
-                (movedPiece.player == "black" && newPosition.y == lastPosition.y + 1))) ||
-                (((movedPiece.player == "white" && newPosition.y == lastPosition.y - 2) ||
-                (movedPiece.player == "black" && newPosition.y == lastPosition.y + 2)) 
-                && (movedPiece.movements == 0)) || (newPosition.y == lastPosition.y)) 
-                && newPosition.x == lastPosition.x) {
+            var whiteAdvanceOne = (movedPiece.player == "white" && newPosition.y == lastPosition.y - 1);
+            var blackAdvanceOne = (movedPiece.player == "black" && newPosition.y == lastPosition.y + 1);
+            var whiteAdvanceTwo = (movedPiece.player == "white" && newPosition.y == lastPosition.y - 2);
+            var blackAdvanceTwo = (movedPiece.player == "black" && newPosition.y == lastPosition.y + 2);
+            var isFirstMovement = (movedPiece.movements == 0);
+            var noAdvance = (newPosition.y == lastPosition.y);
+            var noHorizontalMovements = newPosition.x == lastPosition.x;
+            
+            if (((whiteAdvanceOne || blackAdvanceOne) || 
+                ((whiteAdvanceTwo || blackAdvanceTwo) && isFirstMovement) || 
+                noAdvance) && noHorizontalMovements) {
                 isValid = true;
             }
             break;
@@ -225,6 +229,14 @@ function isValidPosition() {
                 (Math.abs(newPosition.y - lastPosition.y) == 2 && Math.abs(newPosition.x - lastPosition.x) == 1)) {
                 isValid = true;
             }
+    }
+    
+    // Verify new position isn't occuped by an ally
+    for (var i = 0; i < 32; i++) {
+        // It means it's occuped
+        if (pieces[i].x == newPosition.x && pieces[i].y == newPosition.y && i != movedPiece.index) {
+            isValid = false;
+        }
     }
     
     return isValid;
