@@ -74,20 +74,22 @@ function drawPieces() {
 function drawPiece(x, y, canvasContext) {
     for (var i = 0; i < pieces.length; i++) {
         if (pieces[i].x == x && pieces[i].y == y) {
-            if (!pieces[i].selected) {
-                var xPos = x * TILE_SIZE + 10;
-                var yPos = y * TILE_SIZE + 45;
-            } else {
-                var xPos = mouseXPosition - 20;
-                var yPos = mouseYPosition + 5;
+            if (!pieces[i].eaten) {
+                if (!pieces[i].selected) {
+                    var xPos = x * TILE_SIZE + 10;
+                    var yPos = y * TILE_SIZE + 45;
+                } else {
+                    var xPos = mouseXPosition - 20;
+                    var yPos = mouseYPosition + 5;
+                }
+                
+                var pieceType = getPieceType(pieces[i].type, pieces[i].player);
+                
+                // Draw position background
+                canvasContext.font = "40px Arial";
+                canvasContext.fillStyle = pieces[i].player == "white" ? COLOR_P1 : COLOR_P2;
+                canvasContext.fillText(pieceType, xPos, yPos);
             }
-            
-            var pieceType = getPieceType(pieces[i].type, pieces[i].player);
-            
-            // Draw position background
-            canvasContext.font = "40px Arial";
-            canvasContext.fillStyle = pieces[i].player == "white" ? COLOR_P1 : COLOR_P2;
-            canvasContext.fillText(pieceType, xPos, yPos);
         }
     }
 }
@@ -131,7 +133,8 @@ function selectPiece(x, y) {
 }
 
 function placePiece(x, y) {
-    if (isValidPosition()) {
+    var isValid = isValidPosition();
+    if (isValid.success) {
         for (var i = 0; i < 8; i++) {
             for (var j = 0; j < 8; j++) {
                 if (x >= i * TILE_SIZE && x < (i + 1) * TILE_SIZE) {
@@ -147,8 +150,11 @@ function placePiece(x, y) {
         pieces[movedPiece.index].movements += 1;
         
         var data = {
-            piece: pieces[movedPiece.index], 
-            index: movedPiece.index
+            pieceMoved: {
+                piece: pieces[movedPiece.index], 
+                index: movedPiece.index
+            },
+            pieceEaten: isValid.pieceEaten
         };
         
         socket.emit('placePiece', data);
@@ -231,6 +237,8 @@ var isValidPosition = function() {
             }
     }
     
+    var pieceEaten = null;
+    
     // Verify new position isn't occuped by an ally
     for (var i = 0; i < 32; i++) {
         // It means it's occuped by an ally
@@ -238,9 +246,18 @@ var isValidPosition = function() {
             i != movedPiece.index && movedPiece.player == pieces[i].player) {
             isValid = false;
         }
+        
+        if (pieces[i].x == newPosition.x && pieces[i].y == newPosition.y && 
+            i != movedPiece.index && movedPiece.player != pieces[i].player) {
+            pieces[i].eaten = true;
+            pieceEaten = i;
+        }
     }
     
-    return isValid;
+    return {
+        success: isValid,
+        pieceEaten: pieceEaten
+    };
 }
 
 var mouseXPosition, mouseYPosition;

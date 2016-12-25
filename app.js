@@ -17,7 +17,10 @@ fs.readFile('default.json', 'utf8', function (err, data) {
         client.emit('init', JSON.stringify(pieces));
         
         client.on('placePiece', function(data) {
-            pieces[data.index] = data.piece;
+            pieces[data.pieceMoved.index] = data.pieceMoved.piece;
+            if (data.pieceEaten != null) {
+                pieces[data.pieceEaten].eaten = true;
+            }
             client.broadcast.emit('updatePieces', JSON.stringify(pieces));
         });
     });
