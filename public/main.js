@@ -5,8 +5,12 @@
  */
 
 const TILE_SIZE = 64;
+
+// Background colors
 const COLOR_B1 = '#BB9';
 const COLOR_B2 = '#252';
+
+// Pieces colors
 const COLOR_P1 = '#FFF';
 const COLOR_P2 = '#000';
 
@@ -33,6 +37,7 @@ function startGame() {
     canvas = document.getElementById("chess");
     canvasContext = canvas.getContext("2d");
     
+    // Start threat
     setInterval(function() {
         render();
     }, 20);
@@ -146,11 +151,78 @@ function placePiece(x, y) {
         };
         
         socket.emit('placePiece', data);
+        
+        movingPiece = false;
     }
 }
 
 function isValidPosition() {
-    return true;
+    var isValid = false;
+    
+    var lastPosition = {
+        x: pieces[movedPiece.index].x,
+        y: pieces[movedPiece.index].y
+    };
+    
+    var x = mouseXPosition;
+    var y = mouseYPosition;
+    
+    var newPosition = new Object();
+    
+    for (var i = 0; i < 8; i++) {
+        for (var j = 0; j < 8; j++) {
+            if (x >= i * TILE_SIZE && x < (i + 1) * TILE_SIZE) {
+                newPosition.x = i;
+            }
+            if (y >= j * TILE_SIZE && y < (j + 1) * TILE_SIZE) {
+                newPosition.y = j;
+            }
+        }
+    }
+    
+    var frontSense = (movedPiece.player == "white") ? "up" : "down";
+    
+    switch (movedPiece.type) {
+        case "pawn":
+            if ((newPosition.y == lastPosition.y - 1 || newPosition.y == lastPosition.y) && 
+                newPosition.x == lastPosition.x) {
+                isValid = true;
+            }
+            break;
+        case "rook":
+            if ((newPosition.y == lastPosition.y && newPosition.x != lastPosition.x) || 
+                (newPosition.y != lastPosition.y && newPosition.x == lastPosition.x) || 
+                (newPosition.y == lastPosition.y && newPosition.x == lastPosition.x)) {
+                isValid = true;
+            }
+            break;
+        case "queen":
+            if (((newPosition.y == lastPosition.y && newPosition.x != lastPosition.x) || 
+                (newPosition.y != lastPosition.y && newPosition.x == lastPosition.x) || 
+                (newPosition.y == lastPosition.y && newPosition.x == lastPosition.x)) ||
+                (Math.abs(lastPosition.x - newPosition.x) == Math.abs(lastPosition.y - newPosition.y))) {
+                isValid = true;
+            }
+            break;
+        case "bishop":
+            if ((Math.abs(lastPosition.x - newPosition.x) == Math.abs(lastPosition.y - newPosition.y))) {
+                isValid = true;
+            }
+            break;
+        case "king":
+            if (Math.abs(newPosition.x - lastPosition.x) <= 1 && Math.abs(newPosition.y - lastPosition.y) <= 1) {
+                isValid = true;
+            }
+            break;
+        case "knight":
+            if ((newPosition.x == lastPosition.x && newPosition.y == lastPosition.y) ||
+                (Math.abs(newPosition.x - lastPosition.x) == 2 && Math.abs(newPosition.y - lastPosition.y) == 1) ||
+                (Math.abs(newPosition.y - lastPosition.y) == 2 && Math.abs(newPosition.x - lastPosition.x) == 1)) {
+                isValid = true;
+            }
+    }
+    
+    return isValid;
 }
 
 var mouseXPosition, mouseYPosition;
@@ -161,7 +233,6 @@ window.addEventListener('mousedown', function(e) {
             selectPiece(e.clientX, e.clientY);
         } else {
             placePiece(e.clientX, e.clientY);
-            movingPiece = false;
         }
     }
 });
