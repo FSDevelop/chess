@@ -1,5 +1,5 @@
 /**
- * Hipchat Chess v1.0
+ * Hipchat Chess v0.3.2-alpha
  * @since   December 2016
  * @author  Fedeirco Sosa (federico.develop@gmail.com)
  */
