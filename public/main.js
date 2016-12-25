@@ -21,7 +21,7 @@ $(function() {
 
 var canvas;
 var canvasContext;
-var socket = io.connect('http://localhost:8080');
+var socket = io.connect('http://' + window.location.host);
 var pieces;
 
 socket.on('init', function(response) {
