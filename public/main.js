@@ -144,6 +144,7 @@ function placePiece(x, y) {
         }
         
         pieces[movedPiece.index].selected = false;
+        pieces[movedPiece.index].movements += 1;
         
         var data = {
             piece: pieces[movedPiece.index], 
@@ -184,8 +185,12 @@ function isValidPosition() {
     
     switch (movedPiece.type) {
         case "pawn":
-            if ((newPosition.y == lastPosition.y - 1 || newPosition.y == lastPosition.y) && 
-                newPosition.x == lastPosition.x) {
+            if (((((movedPiece.player == "white" && newPosition.y == lastPosition.y - 1) || 
+                (movedPiece.player == "black" && newPosition.y == lastPosition.y + 1))) ||
+                (((movedPiece.player == "white" && newPosition.y == lastPosition.y - 2) ||
+                (movedPiece.player == "black" && newPosition.y == lastPosition.y + 2)) 
+                && (movedPiece.movements == 0)) || (newPosition.y == lastPosition.y)) 
+                && newPosition.x == lastPosition.x) {
                 isValid = true;
             }
             break;
