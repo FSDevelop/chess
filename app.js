@@ -50,7 +50,7 @@ app.post('/generateRoom', function(req, res) {
         
         res.send({
             "color": "green",
-            "message": "It's going to be sunny tomorrow! (yey)",
+            "message": "Play now: http://" + process.env.CHESS_DOMAIN + ":8080/?g=" + roomId,
             "notify": false,
             "message_format": "text"
         });
