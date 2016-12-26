@@ -40,12 +40,15 @@ app.listen(3000, function() {
     console.log('Express in 3000...');
 });
 
-app.get('/generateRoom', function(res, req) {
+/**
+ * Hipchat integration/notifications
+ */
+app.post('/generateRoom', function(req, res) {
     fs.readFile('default.json', 'utf8', function (err, data) {
         var roomId = Math.floor(Math.random() * 10000);
         pieces[roomId] = JSON.parse(data);
         
-        req.send({
+        res.send({
             "color": "green",
             "message": "It's going to be sunny tomorrow! (yey)",
             "notify": false,
