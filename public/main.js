@@ -269,11 +269,26 @@ var isValidPosition = function() {
             i != movedPiece.index && movedPiece.player == pieces[i].player) {
             isValid = false;
         }
-        
+            
+        // It's occuped by an enemy (eat him)
         if (pieces[i].x == newPosition.x && pieces[i].y == newPosition.y && 
             i != movedPiece.index && movedPiece.player != pieces[i].player) {
-            pieces[i].eaten = true;
-            pieceEaten = i;
+            if (pieces[i].type != "king") {
+                // Pawns can't eat with normal movement
+                if (movedPiece.type == "pawn" && isValid) {
+                    isValid = false;
+                } else {
+                    var whiteAdvanceOne = (movedPiece.player == "white" && newPosition.y == lastPosition.y - 1);
+                    var blackAdvanceOne = (movedPiece.player == "black" && newPosition.y == lastPosition.y + 1);
+                    if ((whiteAdvanceOne || blackAdvanceOne) && Math.abs(lastPosition.x - newPosition.x) == 1) {
+                        pieces[i].eaten = true;
+                        pieceEaten = i;
+                        isValid = true;
+                    } else {
+                        isValid = false;
+                    }
+                }
+            }
         }
     }
     
