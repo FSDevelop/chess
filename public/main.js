@@ -14,15 +14,28 @@ const COLOR_B2 = '#252';
 const COLOR_P1 = '#FFF';
 const COLOR_P2 = '#000';
 
-$(function() {
-    // Set game display options
-    $('#chess').css({ backgroundColor: '#DDD' });
-});
-
+var roomId;
 var canvas;
 var canvasContext;
 var socket = io.connect('http://' + window.location.host);
 var pieces;
+
+$(function() {
+    // Set game display options
+    $('#chess').css({ backgroundColor: '#DDD' });
+    
+    if (window.location.search == "") {
+        roomId = Math.floor( Math.random() * 10000 );
+        socket.emit('setRoom', roomId);
+        
+        setTimeout(function() {
+            window.location = "http://" + window.location.host + '?g=' + roomId;
+        }, 500);
+    } else {
+        roomId = window.location.search.split('?g=')[1];
+        socket.emit('requestInit', roomId);
+    }
+});
 
 socket.on('init', function(response) {
     pieces = JSON.parse(response);
@@ -154,7 +167,8 @@ function placePiece(x, y) {
                 piece: pieces[movedPiece.index], 
                 index: movedPiece.index
             },
-            pieceEaten: isValid.pieceEaten
+            pieceEaten: isValid.pieceEaten,
+            roomId: roomId
         };
         
         socket.emit('placePiece', data);
