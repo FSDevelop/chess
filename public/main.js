@@ -7,12 +7,15 @@
 const TILE_SIZE = 64;
 
 // Background colors
-const COLOR_B1 = '#BB9';
+const COLOR_B1 = '#aa8';
 const COLOR_B2 = '#252';
 
 // Pieces colors
 const COLOR_P1 = '#FFF';
 const COLOR_P2 = '#000';
+
+const COLOR_P1_DISABLED = '#cca';
+const COLOR_P2_DISABLED = '#141';
 
 var roomId;
 var canvas;
@@ -20,6 +23,7 @@ var canvasContext;
 var socket = io.connect('http://' + window.location.host);
 var pieces;
 var player1, player2;
+var turn = "white";
 
 $(function() {
     // Set game display options
@@ -47,12 +51,14 @@ socket.on('init', function(response) {
     
     if (data.players != undefined && player2 != undefined) {
         startGame();
-        $('body').append('<h1>Playing: ' + player1 + ' VS ' + player2 + '</h1>');
+        $('body').append('<h1>Playing: ' + player1 + ' (white) VS ' + player2 + ' (black)</h1>');
     }
 });
 
-socket.on('updatePieces', function(response) {
-    pieces = JSON.parse(response);
+socket.on('update', function(response) {
+    data = JSON.parse(response);
+    pieces = data.pieces;
+    turn = data.turn;
 });
 
 function startGame() {
@@ -107,9 +113,12 @@ function drawPiece(x, y, canvasContext) {
                 
                 var pieceType = getPieceType(pieces[i].type, pieces[i].player);
                 
+                var color1 = (turn == "white") ? COLOR_P1 : COLOR_P1_DISABLED;
+                var color2 = (turn == "black") ? COLOR_P2 : COLOR_P2_DISABLED;
+                
                 // Draw position background
                 canvasContext.font = "40px Arial";
-                canvasContext.fillStyle = pieces[i].player == "white" ? COLOR_P1 : COLOR_P2;
+                canvasContext.fillStyle = pieces[i].player == "white" ? color1 : color2;
                 canvasContext.fillText(pieceType, xPos, yPos);
             }
         }
@@ -147,10 +156,12 @@ function selectPiece(x, y) {
     var i = getPieceIndex(x, y);
     
     if (i != undefined) {
-        pieces[i].selected = true;
-        movingPiece = true;
-        movedPiece = pieces[i];
-        movedPiece.index = i;
+        if (pieces[i].player == turn) {
+            pieces[i].selected = true;
+            movingPiece = true;
+            movedPiece = pieces[i];
+            movedPiece.index = i;
+        }
     }
 }
 
@@ -171,13 +182,16 @@ function placePiece(x, y) {
         pieces[movedPiece.index].selected = false;
         pieces[movedPiece.index].movements += 1;
         
+        turn = (turn == "white") ? "black" : "white";
+        
         var data = {
             pieceMoved: {
                 piece: pieces[movedPiece.index], 
                 index: movedPiece.index
             },
             pieceEaten: isValid.pieceEaten,
-            roomId: roomId
+            roomId: roomId,
+            turn: turn
         };
         
         socket.emit('placePiece', data);

@@ -13,6 +13,7 @@ var server = http.createServer(app);
 var socket = require('socket.io')(server);
 
 var initialPieces, pieces = new Object(), players = new Object();
+var turn = new Object();
 
 fs.readFile('default.json', 'utf8', function (err, data) {
     initialPieces = JSON.parse(data);
@@ -43,7 +44,14 @@ fs.readFile('default.json', 'utf8', function (err, data) {
             if (data.pieceEaten != null) {
                 pieces[data.roomId][data.pieceEaten].eaten = true;
             }
-            client.broadcast.emit('updatePieces', JSON.stringify(pieces[data.roomId]));
+            
+            data = {
+                pieces: pieces[data.roomId],
+                turn: data.turn
+            };
+            
+            client.broadcast.emit('update', JSON.stringify(data));
+            
         });
     });
 });
