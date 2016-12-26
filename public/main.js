@@ -45,7 +45,7 @@ socket.on('init', function(response) {
     player1 = data.players["player1"];
     player2 = data.players["player2"];
     
-    if (data.players != undefined && data.players.length == 2 && player2 != undefined) {
+    if (data.players != undefined && player2 != undefined) {
         startGame();
         $('body').append('<h1>Playing: ' + player1 + ' VS ' + player2 + '</h1>');
     }
