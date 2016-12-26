@@ -41,9 +41,14 @@ $(function() {
 socket.on('init', function(response) {
     data = JSON.parse(response);
     pieces = data.pieces;
-    player1 = data.players[0];
-    player2 = data.players[1];
-    startGame();
+    
+    player1 = data.players["player1"];
+    player2 = data.players["player2"];
+    
+    if (data.players != undefined && data.players.length == 2 && player2 != undefined) {
+        startGame();
+        $('body').append('<h1>Playing: ' + player1 + ' VS ' + player2 + '</h1>');
+    }
 });
 
 socket.on('updatePieces', function(response) {
