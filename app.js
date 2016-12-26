@@ -61,7 +61,7 @@ app.post('/generateRoom', function(req, res) {
         pieces[roomId] = JSON.parse(data);
         players[roomId] = {
             player1: req.body.item.message.from.mention_name,
-            player2: req.body.item.message.message.split('/chess @')[1];
+            player2: req.body.item.message.message.split('/chess @')[1]
         };
         
         res.send({
