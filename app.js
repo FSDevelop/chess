@@ -36,6 +36,10 @@ fs.readFile('default.json', 'utf8', function (err, data) {
                 dataEmit.players = players[roomId];
             }
             
+            if (turn[roomId] != null) {
+                dataEmit.turn = turn[roomId];
+            }
+            
             client.emit('init', JSON.stringify(dataEmit));
         });
         
@@ -44,6 +48,8 @@ fs.readFile('default.json', 'utf8', function (err, data) {
             if (data.pieceEaten != null) {
                 pieces[data.roomId][data.pieceEaten].eaten = true;
             }
+            
+            turn[data.roomId] = data.turn;
             
             data = {
                 pieces: pieces[data.roomId],

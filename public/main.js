@@ -23,7 +23,7 @@ var canvasContext;
 var socket = io.connect('http://' + window.location.host);
 var pieces;
 var player1, player2;
-var turn = "white";
+var turn;
 
 $(function() {
     // Set game display options
@@ -45,6 +45,12 @@ $(function() {
 socket.on('init', function(response) {
     data = JSON.parse(response);
     pieces = data.pieces;
+    
+    if (data.turn != null) {
+        turn = data.turn;
+    } else {
+        turn = "white";
+    }
     
     player1 = data.players["player1"];
     player2 = data.players["player2"];
