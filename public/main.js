@@ -19,6 +19,7 @@ var canvas;
 var canvasContext;
 var socket = io.connect('http://' + window.location.host);
 var pieces;
+var player1, player2;
 
 $(function() {
     // Set game display options
@@ -38,7 +39,10 @@ $(function() {
 });
 
 socket.on('init', function(response) {
-    pieces = JSON.parse(response);
+    data = JSON.parse(response);
+    pieces = data.pieces;
+    player1 = data.players[0];
+    player2 = data.players[1];
     startGame();
 });
 

@@ -1,20 +1,23 @@
 var express = require('express');
 var http = require('http');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 var server = http.createServer(app);
 var socket = require('socket.io')(server);
 
-var initialPieces, pieces = new Object();
+var initialPieces, pieces = new Object(), players = new Object();
 
 fs.readFile('default.json', 'utf8', function (err, data) {
     initialPieces = JSON.parse(data);
     
     socket.on('connection', function(client) {
-        
         client.on('setRoom', function(roomId) {
             pieces[roomId] = JSON.parse(data);
         });
@@ -23,7 +26,16 @@ fs.readFile('default.json', 'utf8', function (err, data) {
             if (pieces[roomId] == null) {
                 pieces[roomId] = JSON.parse(data);
             }
-            client.emit('init', JSON.stringify(pieces[roomId]));
+            
+            var dataEmit = {
+                pieces: pieces[roomId]
+            };
+            
+            if (players[roomId] != null) {
+                dataEmit.players = players[roomId];
+            }
+            
+            client.emit('init', JSON.stringify(dataEmit));
         });
         
         client.on('placePiece', function(data) {
@@ -47,6 +59,10 @@ app.post('/generateRoom', function(req, res) {
     fs.readFile('default.json', 'utf8', function (err, data) {
         var roomId = Math.floor(Math.random() * 10000);
         pieces[roomId] = JSON.parse(data);
+        players[roomId] = {
+            player1: req.body.item.message.from.mention_name,
+            player2: req.body.item.message.message.split('/chess @')[1];
+        };
         
         res.send({
             "color": "green",
